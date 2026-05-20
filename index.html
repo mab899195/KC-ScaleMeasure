@@ -250,7 +250,8 @@ const renderPage = async n => {
   await page.render({canvasContext:ctx, viewport:vp}).promise;
   bg = ctx.getImageData(0,0,cv.width,cv.height);
   curPage = n;
-  $('pcur').textContent = n;
+  $('pcur').value = n;
+  if(document.activeElement === $('pcur')) $('pcur').blur();
   $('pprev').disabled = n<=1;
   $('pnext').disabled = n>=pdfDoc.numPages;
   $('pprev').style.opacity = n<=1 ? .4 : 1;
@@ -264,6 +265,24 @@ const renderPage = async n => {
 $('pprev').onclick = () => { if(curPage>1) renderPage(curPage-1); };
 $('pnext').onclick = () => { if(curPage<pdfDoc.numPages) renderPage(curPage+1); };
 
+$('pcur').onfocus = () => $('pcur').select();
+$('pcur').onblur = () => { $('pcur').value = curPage; };
+$('pcur').onkeydown = e => {
+  if(e.key === 'Enter'){
+    e.preventDefault();
+    const n = parseInt($('pcur').value, 10);
+    if(Number.isFinite(n) && n >= 1 && n <= pdfDoc.numPages && n !== curPage){
+      renderPage(n);
+    } else {
+      $('pcur').value = curPage;
+      $('pcur').blur();
+    }
+  } else if(e.key === 'Escape'){
+    $('pcur').value = curPage;
+    $('pcur').blur();
+  }
+};
+
 $('f').onchange = async e => {
   const file = e.target.files[0]; if(!file) return;
   $('fname').textContent = file.name.length>22 ? file.name.slice(0,20)+'…' : file.name;
@@ -272,6 +291,7 @@ $('f').onchange = async e => {
   pdfDoc = await pdfjsLib.getDocument({data:buf}).promise;
   pageData = {};
   $('ptot').textContent = pdfDoc.numPages;
+  $('pcur').style.width = (String(pdfDoc.numPages).length + 1) + 'ch';
   const showPager = pdfDoc.numPages > 1;
   $('pager').style.display = showPager ? '' : 'none';
   $('psep').style.display = showPager ? '' : 'none';
