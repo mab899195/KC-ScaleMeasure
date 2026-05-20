@@ -232,11 +232,12 @@ const setZoom = z => { zoom = Math.max(0.1, Math.min(8, z)); applyZoom(); };
 $('zin').onclick = () => setZoom(zoom * 1.25);
 $('zout').onclick = () => setZoom(zoom / 1.25);
 $('zlabel').onclick = () => setZoom(1);
-$('zfit').onclick = () => {
+const fitToPage = () => {
   if(!cv.width) return;
   const s = $('stage'), pad = 64;
   setZoom(Math.min((s.clientWidth-pad)/cv.width, (s.clientHeight-pad)/cv.height));
 };
+$('zfit').onclick = fitToPage;
 $('stage').addEventListener('wheel', e => {
   if(!e.ctrlKey && !e.metaKey) return;
   e.preventDefault();
@@ -257,7 +258,7 @@ const renderPage = async n => {
   $('pprev').style.opacity = n<=1 ? .4 : 1;
   $('pnext').style.opacity = n>=pdfDoc.numPages ? .4 : 1;
   calPts=[];
-  applyZoom();
+  fitToPage();
   updateHUD();
   redraw();
 };
