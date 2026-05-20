@@ -89,6 +89,10 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;b
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:#2c2c33;border-radius:10px;border:2px solid var(--bg)}
 ::-webkit-scrollbar-thumb:hover{background:#3c3c45}
+
+#pcur{appearance:none;background:transparent;border:none;outline:none;color:inherit;font:inherit;font-variant-numeric:tabular-nums;text-align:center;padding:2px 4px;border-radius:5px;width:2ch;cursor:pointer;font-family:inherit}
+#pcur:hover{background:#1d1d22}
+#pcur:focus{background:#0a0a0b;outline:1px solid var(--accent);cursor:text}
 </style>
 </head>
 <body>
@@ -120,7 +124,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;b
     <button class="btn" id="pprev" title="Previous page">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M15 18l-6-6 6-6"/></svg>
     </button>
-    <div style="display:flex;align-items:center;min-width:64px;justify-content:center;font-size:12px;font-weight:600;color:var(--text);font-variant-numeric:tabular-nums"><span id="pcur">1</span>&nbsp;/&nbsp;<span id="ptot">1</span></div>
+    <div style="display:flex;align-items:center;min-width:64px;justify-content:center;font-size:12px;font-weight:600;color:var(--text);font-variant-numeric:tabular-nums"><input id="pcur" type="text" inputmode="numeric" value="1">&nbsp;/&nbsp;<span id="ptot">1</span></div>
     <button class="btn" id="pnext" title="Next page">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M9 18l6-6-6-6"/></svg>
     </button>
